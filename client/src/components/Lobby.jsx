@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function Lobby({ onHost, onJoin, roomCode, players, isHost }) {
+export default function Lobby({ onHost, onJoin, roomCode, players, isHost, isConnected = true }) {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [showJoin, setShowJoin] = useState(false);
@@ -103,18 +103,25 @@ export default function Lobby({ onHost, onJoin, roomCode, players, isHost }) {
         <button
           className="btn btn-accent"
           onClick={handleHost}
-          disabled={!name.trim()}
+          disabled={!name.trim() || !isConnected}
         >
           Host Room
         </button>
         <button
           className="btn btn-primary"
           onClick={() => setShowJoin(true)}
-          disabled={!name.trim()}
+          disabled={!name.trim() || !isConnected}
         >
           Join Room
         </button>
       </div>
+
+      {!isConnected && (
+        <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#ffb74d', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ffb74d', display: 'inline-block', animation: 'pulse 1.5s infinite' }} />
+          Waking up server... (takes ~30s if idle)
+        </div>
+      )}
     </div>
   );
 }

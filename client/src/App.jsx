@@ -22,6 +22,7 @@ export default function App() {
   const [pieceCount, setPieceCount] = useState(48);
   const [victoryData, setVictoryData] = useState(null);
   const [disconnected, setDisconnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   // --- Refs ---
   const socketRef = useRef(null);
@@ -32,6 +33,14 @@ export default function App() {
     const serverUrl = import.meta.env.VITE_SERVER_URL || (import.meta.env.PROD ? window.location.origin : 'http://localhost:3001');
     const socket = io(serverUrl);
     socketRef.current = socket;
+
+    socket.on('connect', () => {
+      setIsConnected(true);
+    });
+
+    socket.on('disconnect', () => {
+      setIsConnected(false);
+    });
 
     // --- Server → Client events ---
 
@@ -193,7 +202,13 @@ export default function App() {
   return (
     <div className="app">
       {screen === 'lobby' && (
-        <Lobby onHost={handleHost} onJoin={handleJoin} roomCode={roomCode} players={players} />
+        <Lobby
+          onHost={handleHost}
+          onJoin={handleJoin}
+          roomCode={roomCode}
+          players={players}
+          isConnected={isConnected}
+        />
       )}
 
       {screen === 'settings' && (

@@ -24,6 +24,11 @@ import { generatePuzzle } from './gameState.js';
 const app = express();
 app.use(cors());
 
+// Health check endpoint (used for keep-alive pings and status checks)
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime() });
+});
+
 const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
