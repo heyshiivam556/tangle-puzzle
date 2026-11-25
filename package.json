@@ -1,0 +1,12 @@
+{
+  "name": "tanglepuzzle",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "build": "cd client && npm install && npm run build && cd ../server && npm install",
+    "start": "cd server && npm start"
+  }
+}
